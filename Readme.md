@@ -7,15 +7,21 @@
 */register*
 
 >  name
+
 >  email
+
 >  phone
+
 >  dob
+
 >  password
+
 >  confirmPassword
 
 */login*
 
 > email
+
 > password
 
 */forgotpassword*
@@ -25,5 +31,6 @@
 *passwordreset*
 
 > newPassword
+
 > confirmNewPassword
 
