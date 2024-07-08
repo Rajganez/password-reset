@@ -29,8 +29,7 @@ loginRouter.post("/", async (req, res) => {
           { email: mail },
           { projection: { _id: 0 } }
         );
-        const inTime = tempUser.SignIn;
-        res.status(200).json({ msg: "Logged in successfully", inTime });
+        res.status(200).json({ msg: "Logged in successfully", tempUser });
       } else {
         res.status(401).json({ msg: "Invalid credentials" });
       }
