@@ -24,7 +24,7 @@ registerRouter.post("/", async (req, res) => {
         await registerCollections.insertOne({
           ...tempData,
           UserID: Date.now().toString(),
-          Token: undefined
+          Token: true
         });
       }
     });
