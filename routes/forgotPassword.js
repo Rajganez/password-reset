@@ -34,11 +34,6 @@ forgotRouter.post("/", async (req, res) => {
     }
     //If token is expired, user token will be set to null
     //Then the new password will be replaced
-    else if (findingUser.Token !== true) {
-      res
-        .status(200)
-        .send({ msg: "User Found Proceed to Password Reset", idforParam });
-    } 
     else if (findingUser.Token === null) {
       const token = jwt.sign(
         { UserID: findingUser.UserID },
@@ -53,9 +48,15 @@ forgotRouter.post("/", async (req, res) => {
         msg: "Intiated but not changed password more than an hour so change again",
         idforParam,
       });
+    } else {
+      {
+        res
+          .status(200)
+          .send({ msg: "User Found Proceed to Password Reset", idforParam });
+      }
     }
   } catch (error) {
-    res.status(500).send({ msg: "Server Error", error });
+    res.status(500).send({ msg: "Server Error", error : error });
   }
 });
 
