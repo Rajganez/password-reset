@@ -6,6 +6,7 @@ import loginRouter from "./routes/login.js";
 import forgotRouter from "./routes/forgotPassword.js";
 import resetRouter from "./routes/passwordReset.js";
 import logoutRouter from "./routes/logout.js";
+import allDataRouter from "./routes/allUserData.js";
 
 const app = express();
 await connectToDB();
@@ -17,6 +18,7 @@ app.use("/login", loginRouter);
 app.use("/forgotpassword", forgotRouter);
 app.use("/passwordreset", resetRouter);
 app.use("/logout", logoutRouter);
+app.use("/dashboard", allDataRouter);
 
 const port = 8000;
 app.listen(port, () => {
