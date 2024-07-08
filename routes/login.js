@@ -17,9 +17,20 @@ loginRouter.post("/", async (req, res) => {
     //Returns Erro if user is not found
     if (!user) return res.status(404).json({ msg: "User not found" });
     //Compares Encrypted password and alows the user
-    bcrypt.compare(pass, user.password, (err, result) => {
+    bcrypt.compare(pass, user.password, async (err, result) => {
       if (result) {
-        res.status(200).json({ msg: "Logged in successfully" });
+        if (user) {
+          await registerCollections.updateOne(
+            { email: mail },
+            { $set: { SignIn: Date().toString() } }
+          );
+        }
+        const tempUser = await registerCollections.findOne(
+          { email: mail },
+          { projection: { _id: 0 } }
+        );
+        const inTime = tempUser.SignIn;
+        res.status(200).json({ msg: "Logged in successfully", inTime });
       } else {
         res.status(401).json({ msg: "Invalid credentials" });
       }
