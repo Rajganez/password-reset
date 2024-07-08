@@ -34,7 +34,7 @@ forgotRouter.post("/", async (req, res) => {
     }
     //If token is expired, user token will be set to null
     //Then the new password will be replaced
-    else if (findingUser.Token !== null || undefined) {
+    else if (findingUser.Token !== null ) {
       res
         .status(200)
         .send({ msg: "User Found Proceed to Password Reset", idforParam });
