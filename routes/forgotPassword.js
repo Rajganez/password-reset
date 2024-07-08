@@ -46,13 +46,12 @@ forgotRouter.post("/", async (req, res) => {
       );
       res.status(200).send({
         msg: "Intiated but not changed password more than an hour so change again",
-        idforParam,
       });
     } else {
       {
         res
           .status(200)
-          .send({ msg: "User Found Proceed to Password Reset", idforParam });
+          .send({ msg: "User Found Proceed to Password Reset" });
       }
     }
   } catch (error) {
