@@ -4,7 +4,7 @@ import { registerCollections } from "./register.js";
 const allDataRouter = express.Router();
 
 allDataRouter.post("/", async (req, res) => {
-  const id = req.body.userId;
+  const id = req.body;
   try {
     const data = await registerCollections.findOne(
       { UserID: id },
