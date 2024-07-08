@@ -18,6 +18,21 @@ forgotRouter.post("/", async (req, res) => {
     if (!findingUser) {
       return res.status(404).send({ error: "User not found" });
     }
+    else if (findingUser.Token === undefined) {
+      const idforParam = findingUser.UserID;
+      const token = jwt.sign(
+        { UserID: findingUser.UserID },
+        process.env.JWT_SECRET,
+        { expiresIn: "1h" }
+      );
+      await registerCollections.updateOne(
+        { UserID: findingUser.UserID },
+        { $set: { Token: token } }
+      );
+      return res
+        .status(200)
+        .send({ msg: "User Found Proceed to Password Reset", idforParam });
+    }
     //If token is expired, user token will be set to null
     //Then the new password will be replaced
     else if (findingUser.Token === null) {
