@@ -1,5 +1,5 @@
 import express from "express";
-import { registerCollections } from "./register";
+import { registerCollections } from "./register.js";
 
 const logoutRouter = express.Router();
 
