@@ -18,7 +18,7 @@ forgotRouter.post("/", async (req, res) => {
     if (!findingUser) {
       return res.status(404).send({ error: "User not found" });
     }
-    else if (findingUser.Token === undefined) {
+    else if (findingUser.Token === true) {
       const idforParam = findingUser.UserID;
       const token = jwt.sign(
         { UserID: findingUser.UserID },
