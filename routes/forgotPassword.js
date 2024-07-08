@@ -15,10 +15,10 @@ forgotRouter.post("/", async (req, res) => {
       { email: mail },
       { projection: { _id: 0 } }
     );
+    const idforParam = findingUser.UserID;
     if (!findingUser) {
       return res.status(404).send({ error: "User not found" });
     } else if (findingUser.Token === true) {
-      const idforParam = findingUser.UserID;
       const token = jwt.sign(
         { UserID: findingUser.UserID },
         process.env.JWT_SECRET,
@@ -46,16 +46,17 @@ forgotRouter.post("/", async (req, res) => {
       );
       res.status(200).send({
         msg: "Intiated but not changed password more than an hour so change again",
+        idforParam,
       });
     } else {
       {
         res
           .status(200)
-          .send({ msg: "User Found Proceed to Password Reset" });
+          .send({ msg: "User Found Proceed to Password Reset", idforParam });
       }
     }
   } catch (error) {
-    res.status(500).send({ msg: "Server Error", error : error });
+    res.status(500).send({ msg: "Server Error", error: error });
   }
 });
 
