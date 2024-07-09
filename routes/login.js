@@ -22,7 +22,7 @@ loginRouter.post("/", async (req, res) => {
         if (user) {
           await registerCollections.updateOne(
             { email: mail },
-            { $set: { SignIn: Date().toString() } }
+            { $set: { SignIn: Date().toString(), TempInTime: SignIn } }
           );
         }
         const tempUser = await registerCollections.findOne(
