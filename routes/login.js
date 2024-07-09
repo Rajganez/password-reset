@@ -24,10 +24,11 @@ loginRouter.post("/", async (req, res) => {
             { email: mail },
             { $set: { SignIn: Date.now() } }
           );
+          const temp = await registerCollections.findOne({ email: mail });
           await registerCollections.updateOne(
-            {email: mail},
-            { $set: { TempTime: SignIn } }
-          )
+            { email: mail },
+            { $set: { TempTime: temp.SignIn } }
+          );
         }
         const tempUser = await registerCollections.findOne(
           { email: mail },
