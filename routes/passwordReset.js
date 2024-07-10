@@ -8,18 +8,18 @@ dotenv.config();
 
 const resetRouter = express.Router();
 //API to reset the password
-resetRouter.post("/:UserId", async (req, res) => {
+resetRouter.post("/:token", async (req, res) => {
   const newPass = req.body.newPassword;
-  const tokenFromUSer = req.params.UserId;
+  const tokenFromUSer = req.params.token;
   try {
     //UserID is passed as the Params
     const oldPass = await registerCollections.findOne(
-      { UserID: tokenFromUSer },
+      { Token: tokenFromUSer },
       { projection: { _id: 0 } }
     );
     //JWT to perform the token is expired or not
     //If Expired then Token is set to null
-    jwt.verify(oldPass.Token, process.env.JWT_SECRET, async (err, decoded) => {
+    jwt.verify(tokenFromUSer, process.env.JWT_SECRET, async (err, decoded) => {
       if (err) {
         res
           .status(401)

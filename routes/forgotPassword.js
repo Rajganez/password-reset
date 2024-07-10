@@ -25,7 +25,7 @@ forgotRouter.post("/", async (req, res) => {
         process.env.JWT_SECRET,
         { expiresIn: "1h" }
       );
-      const verifyLink = `https://passwordresetbyraj.netlify.app/passwordreset/${idforParam}`;
+      const verifyLink = `https://passwordresetbyraj.netlify.app/passwordreset/${token}`;
       await transporter.sendMail({
         ...mailOptions,
         to: [mailOptions.to, mail],
@@ -53,7 +53,7 @@ forgotRouter.post("/", async (req, res) => {
         { UserID: findingUser.UserID },
         { $set: { Token: token } }
       );
-      const verifyLink = `https://passwordresetbyraj.netlify.app/passwordreset/${idforParam}`;
+      const verifyLink = `https://passwordresetbyraj.netlify.app/passwordreset/${token}`;
       await transporter.sendMail({
         ...mailOptions,
         to: [mailOptions.to, mail],
@@ -66,7 +66,7 @@ forgotRouter.post("/", async (req, res) => {
         idforParam,
       });
     } else {
-      const verifyLink = `https://passwordresetbyraj.netlify.app/passwordreset/${idforParam}`;
+      const verifyLink = `https://passwordresetbyraj.netlify.app/passwordreset/${token}`;
       await transporter.sendMail({
         ...mailOptions,
         to: [mailOptions.to, mail],
