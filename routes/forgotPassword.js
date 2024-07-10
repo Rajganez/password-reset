@@ -31,7 +31,7 @@ forgotRouter.post("/", async (req, res) => {
         to: [mailOptions.to, mail],
         subject: "Password reset Link",
         text: `Click on the link below to reset your password:\n\n`,
-        html: `<a href=${verifyLink}>Reset Password</a>`
+        html: `<a href=${verifyLink}>Reset Password</a>`,
       });
       await registerCollections.updateOne(
         { UserID: findingUser.UserID },
@@ -39,7 +39,7 @@ forgotRouter.post("/", async (req, res) => {
       );
       return res
         .status(200)
-        .send({ msg: "User Found Proceed to Password Reset", idforParam });
+        .send({ msg: "User Found Proceed to Password Reset", token });
     }
     //If token is expired, user token will be set to null
     //Then the new password will be replaced
@@ -59,11 +59,11 @@ forgotRouter.post("/", async (req, res) => {
         to: [mailOptions.to, mail],
         subject: "Password reset Link",
         text: `Click on the link below to reset your password:\n\n`,
-        html: `<a href=${verifyLink}>Reset Password</a>`
+        html: `<a href=${verifyLink}>Reset Password</a>`,
       });
       res.status(200).send({
         msg: "Intiated but not changed password more than an hour so change again",
-        idforParam,
+        token,
       });
     } else {
       const verifyLink = `https://passwordresetbyraj.netlify.app/passwordreset/${token}`;
@@ -72,12 +72,12 @@ forgotRouter.post("/", async (req, res) => {
         to: [mailOptions.to, mail],
         subject: "Password reset Link",
         text: `Click on the link below to reset your password:\n\n`,
-        html: `<a href=${verifyLink}>Reset Password</a>`
+        html: `<a href=${verifyLink}>Reset Password</a>`,
       });
       {
         res
           .status(200)
-          .send({ msg: "User Found Proceed to Password Reset", idforParam });
+          .send({ msg: "User Found Proceed to Password Reset", token });
       }
     }
   } catch (error) {
