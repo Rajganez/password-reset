@@ -19,7 +19,7 @@ resetRouter.post("/:token", async (req, res) => {
     );
     //JWT to perform the token is expired or not
     //If Expired then Token is set to null
-    if (oldPass.Token !== 0) {
+    if (oldPass.Token !== null) {
       jwt.verify(
         tokenFromUSer,
         process.env.JWT_SECRET,
