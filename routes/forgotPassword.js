@@ -39,7 +39,7 @@ forgotRouter.post("/", async (req, res) => {
       );
       return res
         .status(200)
-        .send({ msg: "User Found Proceed to Password Reset", token });
+        .send({ msg: "User Found Proceed to Password Reset", idforParam });
     }
     //If token is expired, user token will be set to null
     //Then the new password will be replaced
@@ -63,7 +63,7 @@ forgotRouter.post("/", async (req, res) => {
       });
       res.status(200).send({
         msg: "Intiated but not changed password more than an hour so change again",
-        token,
+        idforParam,
       });
     } else {
       const verifyLink = `https://passwordresetbyraj.netlify.app/passwordreset/${token}`;
@@ -77,7 +77,7 @@ forgotRouter.post("/", async (req, res) => {
       {
         res
           .status(200)
-          .send({ msg: "User Found Proceed to Password Reset", token });
+          .send({ msg: "User Found Proceed to Password Reset", idforParam });
       }
     }
   } catch (error) {
