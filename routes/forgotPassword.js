@@ -2,6 +2,7 @@ import express from "express";
 import { registerCollections } from "./register.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { transporter, mailOptions } from "../mail-utilities/mailer.js";
 
 dotenv.config();
 
@@ -24,6 +25,14 @@ forgotRouter.post("/", async (req, res) => {
         process.env.JWT_SECRET,
         { expiresIn: "1h" }
       );
+      const verifyLink = `https://passwordresetbyraj.netlify.app/passwordreset/${idforParam}`;
+      await transporter.sendMail({
+        ...mailOptions,
+        to: [mailOptions.to, mail],
+        subject: "Password reset Link",
+        text: `Click on the link below to reset your password:\n\n 
+        <a href="${verifyLink}">Reset Password</a>`,
+      });
       await registerCollections.updateOne(
         { UserID: findingUser.UserID },
         { $set: { Token: token } }
@@ -44,11 +53,27 @@ forgotRouter.post("/", async (req, res) => {
         { UserID: findingUser.UserID },
         { $set: { Token: token } }
       );
+      const verifyLink = `https://passwordresetbyraj.netlify.app/passwordreset/${idforParam}`;
+      await transporter.sendMail({
+        ...mailOptions,
+        to: [mailOptions.to, mail],
+        subject: "Password reset Link",
+        text: `Click on the link below to reset your password:\n\n 
+        <a href="${verifyLink}">Reset Password</a>`,
+      });
       res.status(200).send({
         msg: "Intiated but not changed password more than an hour so change again",
         idforParam,
       });
     } else {
+      const verifyLink = `https://passwordresetbyraj.netlify.app/passwordreset/${idforParam}`;
+      await transporter.sendMail({
+        ...mailOptions,
+        to: [mailOptions.to, mail],
+        subject: "Password reset Link",
+        text: `Click on the link below to reset your password:\n\n 
+        <a href="${verifyLink}">Reset Password</a>`,
+      });
       {
         res
           .status(200)

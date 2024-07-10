@@ -23,7 +23,10 @@ resetRouter.post("/:UserId", async (req, res) => {
       if (err) {
         res
           .status(401)
-          .json({ msg: "Token Expired try to reset again!!", err: err });
+          .json({
+            msg: "Token Expired try to reset with Email again!!",
+            err: err,
+          });
         await registerCollections.updateOne(
           { UserID: oldPass.UserID },
           { $set: { Token: null } }
