@@ -45,7 +45,7 @@ resetRouter.post("/:idforParam", async (req, res) => {
 
         await registerCollections.updateOne(
           { UserID: user.UserID },
-          { $set: { password: hash, confirmPassword: hash, Token: null } }
+          { $set: { password: hash, confirmPassword: hash } }
         );
 
         return res.status(200).json({ msg: "Password reset successful" });
