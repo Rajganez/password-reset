@@ -3,13 +3,11 @@ import { registerCollections } from "./register.js";
 
 const logoutRouter = express.Router();
 
-logoutRouter.post("/:userId", async (req, res) => {
-  const signOut = req.body.outTime;
-  const Id = req.params.userId;
+logoutRouter.post("/", async (req, res) => {
   try {
     await registerCollections.updateOne(
       { UserID: Id },
-      { $set: { SigOut: signOut } }
+      { $set: { SigOut: Date().toString() } }
     );
     res.status(200).send({ msg: "Logged Out Successfully" });
   } catch (error) {
