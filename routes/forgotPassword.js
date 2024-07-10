@@ -28,7 +28,7 @@ forgotRouter.post("/", async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
-    const verifyLink = `https://passwordresetbyraj.netlify.app/passwordreset/${token}`;
+    const verifyLink = `https://passwordresetbyraj.netlify.app/passwordreset/${idforParam}`;
 
     await transporter.sendMail({
       ...mailOptions,

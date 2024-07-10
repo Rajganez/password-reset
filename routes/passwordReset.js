@@ -9,14 +9,14 @@ dotenv.config();
 const resetRouter = express.Router();
 
 // API to reset the password
-resetRouter.post("/:token", async (req, res) => {
+resetRouter.post("/:idforParam", async (req, res) => {
   const newPassword = req.body.newPassword;
-  const tokenFromUser = req.params.token;
+  const tokenFromUser = req.params.idforParam;
 
   try {
     // Find the user by the token
     const user = await registerCollections.findOne(
-      { Token: tokenFromUser },
+      { UserID: tokenFromUser },
       { projection: { _id: 0 } }
     );
 
@@ -25,7 +25,7 @@ resetRouter.post("/:token", async (req, res) => {
     }
 
     // Verify the token
-    jwt.verify(tokenFromUser, process.env.JWT_SECRET, async (err, decoded) => {
+    jwt.verify(user.Token, process.env.JWT_SECRET, async (err, decoded) => {
       if (err) {
         await registerCollections.updateOne(
           { UserID: user.UserID },
