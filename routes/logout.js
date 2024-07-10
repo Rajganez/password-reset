@@ -3,7 +3,7 @@ import { registerCollections } from "./register.js";
 
 const logoutRouter = express.Router();
 
-logoutRouter.get("/:UserID", async (req, res) => {
+logoutRouter.post("/:UserID", async (req, res) => {
   const Id = req.params.UserID;
   try {
     await registerCollections.updateOne(
