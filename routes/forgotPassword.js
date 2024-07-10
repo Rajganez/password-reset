@@ -30,8 +30,8 @@ forgotRouter.post("/", async (req, res) => {
         ...mailOptions,
         to: [mailOptions.to, mail],
         subject: "Password reset Link",
-        text: `Click on the link below to reset your password:\n\n 
-        <a href="${verifyLink}">Reset Password</a>`,
+        text: `Click on the link below to reset your password:\n\n`,
+        html: `<a href=${verifyLink}>Reset Password</a>`
       });
       await registerCollections.updateOne(
         { UserID: findingUser.UserID },
@@ -58,8 +58,8 @@ forgotRouter.post("/", async (req, res) => {
         ...mailOptions,
         to: [mailOptions.to, mail],
         subject: "Password reset Link",
-        text: `Click on the link below to reset your password:\n\n 
-        <a href="${verifyLink}">Reset Password</a>`,
+        text: `Click on the link below to reset your password:\n\n`,
+        html: `<a href=${verifyLink}>Reset Password</a>`
       });
       res.status(200).send({
         msg: "Intiated but not changed password more than an hour so change again",
@@ -71,8 +71,8 @@ forgotRouter.post("/", async (req, res) => {
         ...mailOptions,
         to: [mailOptions.to, mail],
         subject: "Password reset Link",
-        text: `Click on the link below to reset your password:\n\n 
-        <a href="${verifyLink}">Reset Password</a>`,
+        text: `Click on the link below to reset your password:\n\n`,
+        html: `<a href=${verifyLink}>Reset Password</a>`
       });
       {
         res
