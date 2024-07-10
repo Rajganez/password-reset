@@ -7,52 +7,52 @@ import { registerCollections } from "./register.js";
 dotenv.config();
 
 const resetRouter = express.Router();
-//API to reset the password
+
+// API to reset the password
 resetRouter.post("/:token", async (req, res) => {
-  const newPass = req.body.newPassword;
-  const tokenFromUSer = req.params.token;
+  const newPassword = req.body.newPassword;
+  const tokenFromUser = req.params.token;
+
   try {
-    //UserID is passed as the Params
-    const oldPass = await registerCollections.findOne(
-      { Token: tokenFromUSer },
+    // Find the user by the token
+    const user = await registerCollections.findOne(
+      { Token: tokenFromUser },
       { projection: { _id: 0 } }
     );
-    //JWT to perform the token is expired or not
-    //If Expired then Token is set to null
-    if (oldPass.Token !== null) {
-      jwt.verify(
-        tokenFromUSer,
-        process.env.JWT_SECRET,
-        async (err, decoded) => {
-          if (err) {
-            res.status(401).json({
-              msg: "Token Expired try to reset with Email again!!",
-              err: err,
-            });
-            await registerCollections.updateOne(
-              { UserID: oldPass.UserID },
-              { $set: { Token: null } }
-            );
-          }
-          //New token will be generated once the user starts from forgotPassword page
-          else {
-            bcrypt.hash(newPass, 10, async (err, hash) => {
-              if (err) {
-                res.status(500).send({ msg: "Something went wrong", err });
-              } else {
-                await registerCollections.updateOne(
-                  { UserID: oldPass.UserID },
-                  { $set: { password: hash, confirmPassword: hash } }
-                );
-                res.status(200).json({ msg: "Password reset successful" });
-              }
-            });
-          }
-        }
-      );
+
+    if (!user) {
+      return res.status(404).json({ msg: "Invalid token or user not found" });
     }
+
+    // Verify the token
+    jwt.verify(tokenFromUser, process.env.JWT_SECRET, async (err, decoded) => {
+      if (err) {
+        await registerCollections.updateOne(
+          { UserID: user.UserID },
+          { $set: { Token: null } }
+        );
+        return res.status(401).json({
+          msg: "Token expired. Please try to reset with email again.",
+          error: err.message,
+        });
+      }
+
+      // Hash the new password and update the user's password
+      bcrypt.hash(newPassword, 10, async (err, hash) => {
+        if (err) {
+          return res.status(500).json({ msg: "Something went wrong", error: err.message });
+        }
+
+        await registerCollections.updateOne(
+          { UserID: user.UserID },
+          { $set: { password: hash, confirmPassword: hash, Token: null } }
+        );
+
+        return res.status(200).json({ msg: "Password reset successful" });
+      });
+    });
   } catch (error) {
-    res.status(500).send({ msg: "Server Error", error });
+    return res.status(500).json({ msg: "Server error", error: error.message });
   }
 });
 
