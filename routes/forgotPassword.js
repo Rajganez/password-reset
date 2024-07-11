@@ -26,7 +26,7 @@ forgotRouter.post("/", async (req, res) => {
     const token = jwt.sign(
       { UserID: findingUser.UserID },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "3m" }
     );
     if (findingUser.Token !== null && true) {
       const verifyLink = `https://passwordresetbyraj.netlify.app/passwordreset/${idforParam}`;
