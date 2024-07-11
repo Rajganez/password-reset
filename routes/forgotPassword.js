@@ -38,11 +38,6 @@ forgotRouter.post("/", async (req, res) => {
       html: `<a href=${verifyLink}>Reset Password</a>`,
     });
 
-    await registerCollections.updateOne(
-      { UserID: findingUser.UserID },
-      { $set: { Token: token } }
-    );
-
     if (findingUser.Token === null) {
       await registerCollections.updateOne(
         { UserID: findingUser.UserID },
@@ -59,7 +54,7 @@ forgotRouter.post("/", async (req, res) => {
         msg: "Please chenck mail for reset password",
         idforParam,
       });
-    } else {
+    } else if (findingUser.Token === true) {
       await transporter.sendMail({
         ...mailOptions,
         to: [mailOptions.to, mail],
@@ -67,6 +62,10 @@ forgotRouter.post("/", async (req, res) => {
         text: `Click on the link below to reset your password:\n\n${verifyLink}`,
         html: `<a href=${verifyLink}>Reset Password</a>`,
       });
+      await registerCollections.updateOne(
+        { UserID: findingUser.UserID },
+        { $set: { Token: token } }
+      );
       return res.status(200).send({
         msg: "User Found. Proceed to Password Reset",
         idforParam,
