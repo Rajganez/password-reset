@@ -36,8 +36,7 @@ resetRouter.post("/:idforParam", async (req, res) => {
           msg: "Token expired. Please try to reset with email again.",
           error: err.message,
         });
-      }
-      if (!err){
+      }else {
       // Hash the new password and update the user's password
       bcrypt.hash(newPassword, 10, async (err, hash) => {
         if (err) {
