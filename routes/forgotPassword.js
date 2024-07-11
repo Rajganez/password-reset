@@ -44,11 +44,29 @@ forgotRouter.post("/", async (req, res) => {
     );
 
     if (findingUser.Token === null) {
+      await registerCollections.updateOne(
+        { UserID: findingUser.UserID },
+        { $set: { Token: token } }
+      );
+      await transporter.sendMail({
+        ...mailOptions,
+        to: [mailOptions.to, mail],
+        subject: "Password reset Link",
+        text: `Click on the link below to reset your password:\n\n${verifyLink}`,
+        html: `<a href=${verifyLink}>Reset Password</a>`,
+      });
       return res.status(200).send({
-        msg: "Intiated but not changed password more than an hour, so please try resetting again",
+        msg: "Please chenck mail for reset password",
         idforParam,
       });
     } else {
+      await transporter.sendMail({
+        ...mailOptions,
+        to: [mailOptions.to, mail],
+        subject: "Password reset Link",
+        text: `Click on the link below to reset your password:\n\n${verifyLink}`,
+        html: `<a href=${verifyLink}>Reset Password</a>`,
+      });
       return res.status(200).send({
         msg: "User Found. Proceed to Password Reset",
         idforParam,
