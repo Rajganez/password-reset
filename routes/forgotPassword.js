@@ -26,7 +26,7 @@ forgotRouter.post("/", async (req, res) => {
     const token = jwt.sign(
       { UserID: findingUser.UserID },
       process.env.JWT_SECRET,
-      { expiresIn: "3m" }
+      { expiresIn: "15m" }
     );
     if (findingUser.Token !== null && true) {
       const verifyLink = `https://passwordresetbyraj.netlify.app/passwordreset/${idforParam}`;
@@ -34,8 +34,7 @@ forgotRouter.post("/", async (req, res) => {
         ...mailOptions,
         to: [mailOptions.to, mail],
         subject: "Password reset Link",
-        text: `Click on the link below to reset your password:\n\n${verifyLink}`,
-        html: `<a href=${verifyLink}>Reset Password</a>`,
+        html: `Click on the link below to reset your password:${expiresIn}\n\n<a href=${verifyLink}>Reset Password</a>`,
       });
       res
         .status(200)
@@ -50,8 +49,7 @@ forgotRouter.post("/", async (req, res) => {
         ...mailOptions,
         to: [mailOptions.to, mail],
         subject: "Password reset Link",
-        text: `Click on the link below to reset your password:\n\n${verifyLink}`,
-        html: `<a href=${verifyLink}>Reset Password</a>`,
+        html: `Click on the link below to reset your password:${expiresIn}\n\n<a href=${verifyLink}>Reset Password</a>`,
       });
       return res.status(200).send({
         msg: "Please chenck mail for reset password",
