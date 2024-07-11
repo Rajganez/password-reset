@@ -28,17 +28,20 @@ forgotRouter.post("/", async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
-    const verifyLink = `https://passwordresetbyraj.netlify.app/passwordreset/${idforParam}`;
-
-    await transporter.sendMail({
-      ...mailOptions,
-      to: [mailOptions.to, mail],
-      subject: "Password reset Link",
-      text: `Click on the link below to reset your password:\n\n${verifyLink}`,
-      html: `<a href=${verifyLink}>Reset Password</a>`,
-    });
-
-    if (findingUser.Token === null) {
+    if (findingUser.Token !== null) {
+      const verifyLink = `https://passwordresetbyraj.netlify.app/passwordreset/${idforParam}`;
+      await transporter.sendMail({
+        ...mailOptions,
+        to: [mailOptions.to, mail],
+        subject: "Password reset Link",
+        text: `Click on the link below to reset your password:\n\n${verifyLink}`,
+        html: `<a href=${verifyLink}>Reset Password</a>`,
+      });
+      res
+        .status(200)
+        .send({ msg: "Reset password link sent successfully", idforParam });
+    }
+    else if (findingUser.Token === null) {
       await registerCollections.updateOne(
         { UserID: findingUser.UserID },
         { $set: { Token: token } }
