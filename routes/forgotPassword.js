@@ -34,7 +34,7 @@ forgotRouter.post("/", async (req, res) => {
         ...mailOptions,
         to: [mailOptions.to, mail],
         subject: "Password reset Link",
-        html: `Click on the link below to reset your password:${expiresIn}\n\n<a href=${verifyLink}>Reset Password</a>`,
+        html: `Click on the link below to reset your password:Expires in 15m\n\n<a href=${verifyLink}>Reset Password</a>`,
       });
       res
         .status(200)
@@ -49,7 +49,7 @@ forgotRouter.post("/", async (req, res) => {
         ...mailOptions,
         to: [mailOptions.to, mail],
         subject: "Password reset Link",
-        html: `Click on the link below to reset your password:${expiresIn}\n\n<a href=${verifyLink}>Reset Password</a>`,
+        html: `Click on the link below to reset your password: Expires in 15m\n\n<a href=${verifyLink}>Reset Password</a>`,
       });
       return res.status(200).send({
         msg: "Please chenck mail for reset password",
