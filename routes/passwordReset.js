@@ -24,6 +24,7 @@ resetRouter.post("/:idforParam", async (req, res) => {
       return res.status(404).json({ msg: "Invalid token or user not found" });
     }
 
+    if(user) {
     // Verify the token
     jwt.verify(user.Token, process.env.JWT_SECRET, async (err, decoded) => {
       if (err) {
@@ -36,7 +37,7 @@ resetRouter.post("/:idforParam", async (req, res) => {
           error: err.message,
         });
       }
-
+      if (!err){
       // Hash the new password and update the user's password
       bcrypt.hash(newPassword, 10, async (err, hash) => {
         if (err) {
@@ -50,7 +51,9 @@ resetRouter.post("/:idforParam", async (req, res) => {
 
         return res.status(200).json({ msg: "Password reset successful" });
       });
+    }
     });
+  }
   } catch (error) {
     return res.status(500).json({ msg: "Server error", error: error.message });
   }
