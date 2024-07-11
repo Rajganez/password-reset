@@ -28,7 +28,7 @@ forgotRouter.post("/", async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
-    if (findingUser.Token !== null) {
+    if (findingUser.Token !== null && true) {
       const verifyLink = `https://passwordresetbyraj.netlify.app/passwordreset/${idforParam}`;
       await transporter.sendMail({
         ...mailOptions,
@@ -41,7 +41,7 @@ forgotRouter.post("/", async (req, res) => {
         .status(200)
         .send({ msg: "Reset password link sent successfully", idforParam });
     }
-    else if (findingUser.Token === null) {
+    else if (findingUser.Token === null || true) {
       await registerCollections.updateOne(
         { UserID: findingUser.UserID },
         { $set: { Token: token } }
@@ -57,23 +57,7 @@ forgotRouter.post("/", async (req, res) => {
         msg: "Please chenck mail for reset password",
         idforParam,
       });
-    } else if (findingUser.Token === true) {
-      await transporter.sendMail({
-        ...mailOptions,
-        to: [mailOptions.to, mail],
-        subject: "Password reset Link",
-        text: `Click on the link below to reset your password:\n\n${verifyLink}`,
-        html: `<a href=${verifyLink}>Reset Password</a>`,
-      });
-      await registerCollections.updateOne(
-        { UserID: findingUser.UserID },
-        { $set: { Token: token } }
-      );
-      return res.status(200).send({
-        msg: "User Found. Proceed to Password Reset",
-        idforParam,
-      });
-    }
+    } 
   } catch (error) {
     return res.status(500).send({ msg: "Server Error", error: error.message });
   }
